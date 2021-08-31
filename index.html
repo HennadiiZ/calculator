@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+    <meta name="viewport" content="width=device-width">
+
+    <!-- <link rel="stylesheet" href="review.css"> -->
+    <title>Document</title>
+</head>
+<body>
+    <style> 
+    
+    
+*{
+    padding:0;
+    Margin:0;
+    border:0;
+    box-sizing : border-box;
+    }
+    *{
+        padding: 0;
+        margin: 0;
+        border: 0;
+    }
+    *,*:before,*:after {
+        -moz-box-sizing: border-box; 
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    
+    :focus,:active{outline: none;}
+    a:focus,a:active{outline: none;}
+    
+    nav,footer,header,aside{display:block;}
+    
+    html, body {
+        height:100%;
+        width: 100%;
+        font-size: 100%;
+        line-height: 1;
+        font-size: 14px;
+        -ms-text-size-adjust: 100%;
+        -moz-text-align-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    input,button,textarea{ 
+        font-family: inherit;
+    }
+    
+    input::-ms-clear{display: none;}
+    button{cursor: pointer;}
+    button::-moz-focus-inner {padding:0; border:0;}
+    a, a:visited{text-decoration: none;}
+    a:hover{ text-decoration: none;}
+    ul li{list-style: none;}
+    img{vertical-align: top;}
+    
+    h1,h2, h3, h4, h5, h6{
+        font-size:inherit;
+        font-weight: 400;
+    }
+/* //================= */
+body{
+
+}
+
+.calculator{
+   
+}
+
+.content, .content1,.content2{
+display: flex;
+margin: 0 auto;
+background: rgb(235, 218, 218);
+background-image: linear-gradient(100deg,   rgb(150, 221, 150), rgb(199, 152, 152)) ;
+
+width: 800px;
+}
+
+.content{
+height: 100px;
+}
+.content1{
+height: 100px;
+justify-content: center;
+}
+.content2{
+align-items: flex-end;
+}
+.pole1, .pole2{
+    width: 100px;
+   
+}
+.pole1{
+    height: 200px;
+    background: rgb(224, 118, 118);
+}
+.pole2{
+    background: rgb(148, 206, 148);
+}
+button, input, select{
+cursor: pointer;
+width: 100px;
+height: 50px;
+border: 4px solid yellow;
+border-radius: 6px;
+font-size: 25px;
+transition-duration: 1s;
+}
+
+
+button:hover{
+    border: 4px solid white;
+    background: yellow;
+}
+
+.descr{
+margin: 0 auto;
+font-weight: 700;
+font-size: 25px;
+padding-top: 15px;
+}
+.for_input{
+    margin: 0 auto;
+    padding-top: 15px;
+
+}
+input, select{
+    cursor: pointer;
+    width: 300px;
+    height:40px;
+    font-size: 25px;
+ }
+ .turn_red{
+     color: red;
+ }
+    </style>
+
+<form name="calculator">
+<div class='content'>
+    <div class='descr'>
+    <p>Сумма:</p>    
+    </div>
+
+    <div class='for_input'>
+    <input name="money" id="money" type="text" placeholder="10000">
+    <div class="error"></div>
+    </div>
+</div>
+
+<div class='line'></div>
+
+<div class='content'>
+    <div class='descr'>
+    <p>Срок в месяцах:</p>    
+    </div>
+
+    <div class='for_input'>
+        <select name="months" id="months">
+            <option value="3">3 (минимум)</option>
+            <option value="6">6 (полгода)</option>
+            <option value="12" selected>12 (год)</option> 
+            <option value="18">18 (1.5 года)</option>
+            <option value="24">24 (2 года)</option>
+            <option value="30">30 (2.5 года)</option>
+            <option value="36">36 (3 года)</option>
+          </select>
+    </div>
+</div>
+
+<div class='line'></div>
+
+<div class='content'>
+    <div class='descr'>
+    <p>С бонусом 200 грн :</p>    
+    </div>
+
+    <div class='for_input'>
+        <input class='checkbox' name="capitalization" id="capitalization" type="checkbox">
+    </div>
+</div>
+<div class='content1'>
+
+    <button id="click">PRESS</button>
+    
+</div>
+<div class='content2'>
+    <div class='descr'>
+    <p>Было:</p> 
+    <div id="moneybefore"></div>
+    <div class='pole1' id="oneElem"></div>   
+    </div>
+
+    <div class='descr'>
+    <p>Станет:</p> 
+    <div id="moneyafter"></div>
+    <div class='pole2' id="twoElem"></div>   
+    </div>
+</div>
+<div class='content'></div>
+</form>
+
+<script>
+const input_amount = document.querySelector('#money');
+const select_termOfuse = document.querySelector('#months');
+const input_bonus_200 = document.querySelector('#capitalization'); // обращение к чекбоксу.
+const button = document.querySelector('#click'); 
+const moneyBefore = document.querySelector('#moneybefore'); 
+const moneyAfter = document.querySelector('#moneyafter');
+const twoElem = document.querySelector('#twoElem');
+const div_error = document.querySelector('.error');
+
+button.addEventListener('click', pressButton);
+function pressButton(e){
+     e.preventDefault();
+     let final = ''; 
+     if( input_amount.value.trim() ){            
+        if(+input_amount.value   || +input_amount.value === 0 ){
+        +input_amount.value <= 0 && (input_amount.value *=  -1)
+
+                      moneyBefore.innerHTML = input_amount.value;// в красном столбике показывает, сколько изначально положил.
+                      let result = input_amount.value  * (1 + 0.012 * select_termOfuse.value);
+                      result = Math.floor(result)
+                      input_bonus_200.checked && (result += 200)
+                      moneyAfter.innerHTML = result;
+                      twoElem.style.height = '230px';
+        }else{
+            final = ` <span class='turn_red'>${input_amount.value}</span> - IS NOT A NUMBER! :(` 
+        }
+     }else{
+        final = 'you forgot to insert a number!';
+     }
+input_amount.value = '';
+div_error.innerHTML = final;
+console.log(final)
+
+}
+</script>
+</body>
+</html>
